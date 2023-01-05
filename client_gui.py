@@ -156,10 +156,9 @@ def choise(choise):
 	my_choise = my_choise.upper()
 
 	if my_choise in ['R', 'P', 'S']:
-		my_choise = my_choise.upper() # ----> Verificare se metterlo o meno
 		msg = "Your choise: " + str(my_choise)
-		print(msg)
-		update_client_message(msg)
+		#print(msg)
+		#update_client_message(msg)
 		client.send(my_choise.encode())
 	
 	# Create new thread, otherwise gui thread is blocked
