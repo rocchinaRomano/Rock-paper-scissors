@@ -10,12 +10,6 @@
 
 If there was a **DRAW** (the players make the same choise), the hand must be replayed.
 
-
-### GAME SEQUENCE DIAGRAM:
-
-![Game diagram sequence](img/diagram_sequence.png)
-
-
 ## PREREQUISITES
 
 - [Anaconda](https://www.anaconda.com/products/distribution)
