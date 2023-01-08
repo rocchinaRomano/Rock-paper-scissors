@@ -79,7 +79,7 @@ def update_server_message(msg):
 #										GAME METHOD
 #-----------------------------------------------------------------------------------------
 
-def get_winner():
+def get_winner(choise_player1, choise_player2, name_player1, name_player2):
 
 	'''
 		*** GAME RULES ***
@@ -140,7 +140,7 @@ def start_game():
 	print(msg)
 	update_server_message(msg)
 
-	result = get_winner()
+	result = get_winner(choise_player1, choise_player2, name_player1, name_player2)
 
 	# The server sends the players the choices made by both and the name of the winner
 

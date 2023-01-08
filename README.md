@@ -97,3 +97,15 @@ A step-by-step video tutorial of game is available [here](https://github.com/roc
 [Here](https://github.com/rocchinaRomano/Rock-paper-scissors/tree/shell_game) is also available a **shell** version of game.
 
 # REGRESSION TEST
+
+## Prerequisities: 
+
+Python "**unittest**"  library
+
+## Run regression test:
+
+In the "**Rock-paper-scissors-main**" folder open one "Anaconda or Python shell" and type the following command:
+
+```console
+   python3 test_game.py
+```
