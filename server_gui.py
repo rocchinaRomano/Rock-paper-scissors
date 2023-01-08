@@ -6,6 +6,9 @@ import socket
 import sys
 from time import sleep
 import threading
+import logging
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 #-----------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------
@@ -95,7 +98,7 @@ def get_winner(choise_player1, choise_player2, name_player1, name_player2):
 	global draw
 
 	msg = "The system is about to proclaim the winner..."
-	print(msg)
+	logging.info(msg)
 	update_server_message(msg)
 	result = "\n***FINAL RESULTS***\n\n"
 	if (choise_player1 == 'R' and choise_player2 == 'P'
@@ -126,25 +129,25 @@ def start_game():
 	# rock, paper or scissors
 
 	msg = "Waiting to receive a choice from the two players!"
-	print(msg)
+	logging.info(msg)
 	update_server_message(msg)
 
 	# The Server receives the choice of the first player
 	choise_player1 = player1_conn.recv(MAX_BUFFER).decode()
 	msg = "A choice has been made! Looking forward to the second..."
-	print(msg)
+	logging.info(msg)
 	update_server_message(msg)
 
 	choise_player2 = player2_conn.recv(MAX_BUFFER).decode()
 	msg = "The second choice has been received!"
-	print(msg)
+	logging.info(msg)
 	update_server_message(msg)
 
 	result = get_winner(choise_player1, choise_player2, name_player1, name_player2)
 
 	# The server sends the players the choices made by both and the name of the winner
 
-	print(result)
+	logging.info(result)
 	update_server_message(result)
 
 	player1_conn.send(result.encode())
@@ -153,7 +156,7 @@ def start_game():
 	# If there was a draw, the hand must be replayed:
 	if draw == 1:
 		msg = "The game ended in a draw! It is necessary to replay!"
-		print(msg)
+		logging.info(msg)
 		update_server_message(msg)
 		player1_conn.send("DRAW".encode())
 		player2_conn.send("DRAW".encode())
@@ -176,7 +179,7 @@ def connect_players(server, y):
 			name_player1 = connection_client.recv(MAX_BUFFER).decode()
 			player1_conn = connection_client
 			msg = "Player 1 (" + name_player1 + "), connected to game!"
-			print(msg)
+			logging.info(msg)
 			update_server_message(msg)
 			
 			# The server sends a Welcome message to Player 1
@@ -187,7 +190,7 @@ def connect_players(server, y):
 			name_player2 = connection_client.recv(MAX_BUFFER).decode()
 			player2_conn = connection_client
 			msg = "Player 2 (" + name_player2 + "), connected to game!"
-			print(msg)
+			logging.info(msg)
 			update_server_message(msg)
 
 			# The server sends a Welcome message to Player 2
@@ -198,7 +201,7 @@ def connect_players(server, y):
 
 	# If there are two players connected, the game can start
 	msg = "Two players are connected! The game will starts in 5 seconds..."
-	print(msg)
+	logging.info(msg)
 	update_server_message(msg)
 	sleep(5)
 	player1_conn.send("Y".encode())
@@ -211,7 +214,7 @@ def connect_server():
 	global server
 
 	msg = '\nWelcome to "[R]ock, [P]aper, [S]cissors" game!'
-	print(msg)
+	logging.info(msg)
 	# Manage any exceptions (e.g. port already used by another service)
 	try:
 		# Create Server socket:
@@ -229,7 +232,7 @@ def connect_server():
 
 		msg = "The Server has been initialized!"
 		msg = msg + "\nThe server is waiting for " + str(MAX_CONNECTION) + " players..."
-		print(msg)
+		logging.info(msg)
 		update_server_message(msg)
 
 		# If no errors occurred, the player is accepted by the Server
@@ -241,7 +244,7 @@ def connect_server():
 	except socket.error as err:
 		msg = "An error has occurred..." + str(err)
 		msg = msg + "\nI'm trying to reinitialize the server..."
-		print(msg)
+		logging.info(msg)
 		update_server_message(msg)
 		# Recursive call to the function to try to reconnect the server
 		connect_server()
@@ -255,12 +258,12 @@ if __name__ == '__main__':
 	except socket.error as err:
 		msg = "An error has occurred..." + str(err)
 		msg = msg + "\nI'm trying to reinitialize the server..."
-		print(msg)
+		logging.info(msg)
 		update_server_message(msg)
 		sys.exit()
 	except KeyboardInterrupt:
 		msg = "The player typed [Ctrl + C] to quit the game!"
 		msg = msg + "\nThe game is over!"
-		print(msg)
+		logging.info(msg)
 		update_server_message(msg)
 		sys.exit()

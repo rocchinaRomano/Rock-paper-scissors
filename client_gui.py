@@ -6,6 +6,9 @@ import socket
 import sys
 from time import sleep
 import threading
+
+import logging
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 #-----------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------
@@ -135,12 +138,12 @@ def update_client_message(msg):
 def get_winner(client, y):
 	winner = client.recv(MAX_BUFFER).decode()
 	#sleep(1)
-	print(winner)
+	logging.info(winner)
 	update_client_message(winner)
 
 	if client.recv(MAX_BUFFER).decode() == "DRAW":
 		msg = "The game ended in a draw!\n It is necessary to replay!"
-		print(msg)
+		logging.info(msg)
 		update_client_message(msg)
 		sleep(3)
 		enable_button("y")
@@ -157,7 +160,7 @@ def choise(choise):
 
 	if my_choise in ['R', 'P', 'S']:
 		msg = "Your choise: " + str(my_choise)
-		#print(msg)
+		#logging.info(msg)
 		#update_client_message(msg)
 		client.send(my_choise.encode())
 	
@@ -171,7 +174,7 @@ def start_game(client, y):
 	nickname = player_name_etn.get()
 	client.send(nickname.encode())
 	msg = "Your nickname: " + nickname
-	print(msg)
+	logging.info(msg)
 	update_client_message(msg)
 
 	# The Player receives the welcome message from the Server 
@@ -180,7 +183,7 @@ def start_game(client, y):
 		if data == "Y":
 			msg = "The game can be start."
 			msg = msg + "\nChoise between Rock, Paper or Scissors!"
-			print(msg)
+			logging.info(msg)
 			update_client_message(msg)
 			sleep(2)
 			enable_button("y")
@@ -199,7 +202,7 @@ def connect_player():
 		# Client connected to Server:
 		client.connect((HOST_ADDRESS, HOST_PORT))
 		msg = "\nYou are connect for playing"
-		print(msg)
+		logging.info(msg)
 		update_client_message(msg)
 
 		# Create new thread, otherwise gui thread is blocked
@@ -208,7 +211,7 @@ def connect_player():
 	except socket.error as err:
 		msg = "An error has occurred...\n" + str(err)
 		msg = msg + "\nUnable to connect to server! Try later!"
-		print(msg)
+		logging.info(msg)
 		update_client_message(msg)
 		#sleep(5)
 		#sys.exit()
@@ -223,12 +226,12 @@ if __name__ == '__main__':
 	except socket.error as err:
 		msg = "An error has occurred..." + str(err)
 		msg = msg + "\nUnable to connect to server! Try later!"
-		print(msg)
+		logging.info(msg)
 		update_client_message(msg)
 		sleep(5)
 		sys.exit()
 	except KeyboardInterrupt:
 		msg = "The player typed [Ctrl + C] to quit the game!"
 		msg = msg + "\nThe game is over!"
-		print(msg)
+		logging.info(msg)
 		update_client_message(msg)
