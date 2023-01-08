@@ -26,7 +26,7 @@ MAX_BUFFER = 1024 # 1024 bytes -> max buffer size
 
 
 
-def get_winner():
+def get_winner(choise_player1, choise_player2, name_player1, name_player2):
 
 	'''
 		*** GAME RULES ***
@@ -78,7 +78,7 @@ def start_game():
 
 	choise_player2 = player2_conn.recv(MAX_BUFFER).decode()
 	print("The second choice has been received!")
-	result = get_winner()
+	result = get_winner(choise_player1, choise_player2, name_player1, name_player2)
 
 	# The server sends the players the choices made by both and the name of the winner
 

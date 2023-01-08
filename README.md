@@ -72,3 +72,15 @@ A step-by-step video tutorial of game is available [here](https://github.com/roc
 
 
 # REGRESSION TEST
+
+## Prerequisities: 
+
+Python "**unittest**"  library
+
+## Run regression test:
+
+In the "**Rock-paper-scissors-shell_game**" folder open one "Anaconda or Python shell" and type the following command:
+
+```console
+   python3 test_game.py
+```
