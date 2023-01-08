@@ -30,14 +30,10 @@ If there was a **DRAW** (the players make the same choise), the hand must be rep
 
 Install **Tkinter** library for GUI:
 
-- for **Windows**:  (----> VERIFICARE SU WINDOWS)
+- for **Windows**:
 
 ```console
-   python3 --version
-   pip3 --version
-   pip3 install --upgrade pip
-   pip3 install tkinter (or tk)
-   
+   pip install tk
 ```  
 
 - for **Linux**:
