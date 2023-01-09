@@ -48,10 +48,22 @@ If there was a **DRAW** (the players make the same choise), the hand must be rep
    python3 server.py
 ```  
 
+or
+
+```console
+   python server.py
+```  
+
 **3.** In the two **Players shell** type following command:
 
 ```console
    python3 client.py
+```  
+
+or
+
+```console
+   python client.py
 ```  
 
 **4.** The **two Players** enter their nickname and the game can be start
@@ -78,4 +90,10 @@ In the "**Rock-paper-scissors-shell_game**" folder open one "Anaconda or Python 
 
 ```console
    python3 test_game.py
+```
+
+or
+
+```console
+   python test_game.py
 ```
