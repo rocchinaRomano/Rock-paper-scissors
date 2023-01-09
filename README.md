@@ -67,11 +67,21 @@ Install **Tkinter** library for GUI:
 ```console
    python3 server_gui.py
 ```  
+or
+
+```console
+   python server_gui.py
+```  
 
 **3.** In the two **Players shell** type following command:
 
 ```console
    python3 client_gui.py
+```  
+or
+
+```console
+   python client_gui.py
 ```  
 
 **4.** The **two Players** enter their nickname and the game can be start
@@ -102,4 +112,9 @@ In the "**Rock-paper-scissors-main**" folder open one "Anaconda or Python shell"
 
 ```console
    python3 test_game.py
+```
+or
+
+```console
+   python test_game.py
 ```
