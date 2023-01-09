@@ -15,6 +15,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 #								GLOBAL VARIABLES FOR THE GAME
 #-----------------------------------------------------------------------------------------
 my_choise = ""
+nickname = "x"
+opponent_player = "x"
 #-----------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------
@@ -39,7 +41,7 @@ welcome_lb = tk.Label(frame, text=welcome_txt, fg = "red")
 welcome_lb.config(font = ("Courier", 15))
 welcome_lb.pack(side=tk.TOP)
 
-player_name_lb = tk.Label(frame, text = "Name: ")
+player_name_lb = tk.Label(frame, text = "Name")
 player_name_lb.config(font = ("Courier", 11))
 player_name_lb.pack(side = tk.LEFT)
 
@@ -50,6 +52,13 @@ player_name_btn = tk.Button(frame, text = "Connect", command = lambda:connect_pl
 player_name_btn.pack(side = tk.LEFT)
 
 frame.pack(side=tk.TOP, pady=(5, 0))
+
+frame_info = tk.Frame()
+you_opponent_txt = "\n\nYou: " + nickname + " - Opponent Player: " + opponent_player
+you_opponent_lb = tk.Label(frame_info, text = you_opponent_txt)
+you_opponent_lb .config(font = ("Courier", 11))
+you_opponent_lb .pack(side = tk.LEFT)
+frame_info.pack(side=tk.TOP, pady=(5, 0))
 
 button_frame = tk.Frame(window)
 	
@@ -128,6 +137,11 @@ def update_client_message(msg):
 	result_lb_txt = result_lb_txt + msg + "\n\n"
 	result_lb['text'] = result_lb_txt
 
+def update_client_gui():
+	global you_opponent_txt
+
+	you_opponent_txt = "You: " + nickname + " - Opponent Player: " + opponent_player
+	you_opponent_lb['text'] = you_opponent_txt
 	
 #-----------------------------------------------------------------------------------------
 
@@ -138,17 +152,20 @@ def update_client_message(msg):
 def get_winner(client, y):
 	winner = client.recv(MAX_BUFFER).decode()
 	#sleep(1)
+	if winner == nickname:
+		winner = "YOU WIN!"
+	elif winner == opponent_player:
+		winner = "YOU LOSE"
+	
 	logging.info(winner)
 	update_client_message(winner)
 
-	if client.recv(MAX_BUFFER).decode() == "DRAW":
+	if winner == "DRAW":
 		msg = "The game ended in a draw!\n It is necessary to replay!"
 		logging.info(msg)
 		update_client_message(msg)
 		sleep(3)
-		enable_button("y")
-			
-	
+		enable_button("y") 
 
 def choise(choise):
 	global my_choise
@@ -169,6 +186,7 @@ def choise(choise):
 
 
 def start_game(client, y):
+	global nickname, opponent_player
 	frame.pack_forget()
 	# The player writes his name and sends it to the Server
 	nickname = player_name_etn.get()
@@ -176,7 +194,7 @@ def start_game(client, y):
 	msg = "Your nickname: " + nickname
 	logging.info(msg)
 	update_client_message(msg)
-
+	
 	# The Player receives the welcome message from the Server 
 	while True:
 		data = client.recv(MAX_BUFFER).decode()
@@ -188,6 +206,12 @@ def start_game(client, y):
 			sleep(2)
 			enable_button("y")
 			break
+	# Client legge il nome dello sfidante
+	opponent_player = client.recv(MAX_BUFFER).decode()
+	msg = "Opponent Player: " + opponent_player
+	logging.info(msg)
+	update_client_message(msg)
+	update_client_gui()
 
 def connect_player():
 	# Player connect to the Server

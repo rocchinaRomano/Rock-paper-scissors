@@ -22,6 +22,7 @@ player2_conn = ""
 choise_player1 = ""
 choise_player2 = ""
 draw = 0
+txt = ""
 #-----------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------
@@ -95,29 +96,28 @@ def get_winner(choise_player1, choise_player2, name_player1, name_player2):
 
 	'''
 
-	global draw
+	global draw, txt
 
 	msg = "The system is about to proclaim the winner..."
 	logging.info(msg)
 	update_server_message(msg)
-	result = "\n***FINAL RESULTS***\n\n"
 	if (choise_player1 == 'R' and choise_player2 == 'P'
 		or choise_player1 == 'P' and choise_player2 == 'S'
 			or choise_player1 == 'S' and choise_player2 == 'R'):
-				result = result + "[Player 1: " + name_player1 + " - Choise: " + choise_player1 + "]\n" 
-				result = result + "[Player 2: " + name_player2 + " - Choise: " + choise_player2 + "]\n"
-				result = result + "\nRESULT: " + name_player2 + " won "+ name_player1 + "!\n"
+				txt = "[Player 1: " + name_player1 + " - Choise: " + choise_player1 + "]\n" 
+				txt = txt + "[Player 2: " + name_player2 + " - Choise: " + choise_player2 + "]\n"
+				result = name_player2 # player2 won
 	elif (choise_player1 == 'S' and choise_player2 == 'S'
 			or choise_player1 == 'P' and choise_player2 == 'P'
 			or choise_player1 == 'R' and choise_player2 == 'R'):
 			draw = 1
-			result = result + "[Player 1: " + name_player1 + " - Choise: " + choise_player1 + "]\n" 
-			result = result + "[Player 2: " + name_player2 + " - Choise: " + choise_player2 + "]\n"
-			result = result + "\nRESULT: DRAW!\n"
+			txt = "[Player 1: " + name_player1 + " - Choise: " + choise_player1 + "]\n" 
+			txt = txt + "[Player 2: " + name_player2 + " - Choise: " + choise_player2 + "]\n"
+			result = "DRAW"
 	else:
-		result = result + "[Player 1: " + name_player1 + " - Choise: " + choise_player1 + "]\n" 
-		result = result + "[Player 2: " + name_player2 + " - Choise: " + choise_player2 + "]\n"
-		result = result + "\nRESULT: " + name_player1 + " won "+ name_player2 + "!\n"
+		txt = "[Player 1: " + name_player1 + " - Choise: " + choise_player1 + "]\n" 
+		txt = txt + "[Player 2: " + name_player2 + " - Choise: " + choise_player2 + "]\n"
+		result = name_player1 # player1 won
 
 	return result
 
@@ -147,8 +147,17 @@ def start_game():
 
 	# The server sends the players the choices made by both and the name of the winner
 
-	logging.info(result)
-	update_server_message(result)
+	msg = result
+	logging.info(txt)
+	if msg == "DRAW":
+		msg = "\nFINAL RESULT: \n" + result
+		logging.info(msg)
+		mess = txt + msg + "\n" 
+		update_server_message(mess)
+	else:
+		msg = "WINNER: " + result
+		mess = txt + msg + "\n"
+		update_server_message(mess)
 
 	player1_conn.send(result.encode())
 	player2_conn.send(result.encode())
@@ -158,8 +167,8 @@ def start_game():
 		msg = "The game ended in a draw! It is necessary to replay!"
 		logging.info(msg)
 		update_server_message(msg)
-		player1_conn.send("DRAW".encode())
-		player2_conn.send("DRAW".encode())
+		#player1_conn.send("DRAW".encode())
+		#player2_conn.send("DRAW".encode())
 		draw = 0
 		sleep(1)
 		start_game()
@@ -206,6 +215,9 @@ def connect_players(server, y):
 	sleep(5)
 	player1_conn.send("Y".encode())
 	player2_conn.send("Y".encode())
+	# Server sends opponent player name to player
+	player1_conn.send(name_player2.encode())
+	player2_conn.send(name_player1.encode())
 	start_game()
 
 
