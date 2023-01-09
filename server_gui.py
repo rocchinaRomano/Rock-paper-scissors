@@ -43,7 +43,7 @@ window = tk.Tk()
 window.title('Server Game') # window title
 
 frame = tk.Frame(window)
-welcome_txt = 'Welwcome to "Rock, Paper, Scissor" Game!\n'
+welcome_txt = 'Welcome to "Rock, Paper, Scissor" Game!\n'
 
 welcome_lb = tk.Label(frame, text=welcome_txt, fg = "red")
 welcome_lb.config(font = ("Courier", 15))
