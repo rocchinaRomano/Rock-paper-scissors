@@ -12,7 +12,7 @@ If there was a **DRAW** (the players make the same choise), the hand must be rep
 
 ### SEQUENCE DIAGRAM OF GAME:
 
-<img src="/img/sequence_diagram.jpg"  width="50%" height="50%">
+<img src="/img/sequence_diagram.jpg"  width="70%" height="70%">
 
 ## PREREQUISITES
 
